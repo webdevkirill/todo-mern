@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import axios from 'axios';
 import './authPage.sass';
 
 export default function AuthPage() {
@@ -11,6 +12,22 @@ export default function AuthPage() {
 	const inputChangeHandler = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
 		console.log(form);
+	};
+
+	const registerHandler = async () => {
+		try {
+			await axios
+				.post('http://localhost:3005/api/auth/registration', form, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+				.then((res) => {
+					console.log(res);
+				});
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	return (
@@ -64,7 +81,10 @@ export default function AuthPage() {
 
 							<Route path='/registration'>
 								<h3>Регистрация</h3>
-								<form className='form form-login'>
+								<form
+									className='form form-login'
+									onSubmit={(e) => e.preventDefault()}
+								>
 									<div className='row'>
 										<div className='input-field col s12'>
 											<input
@@ -92,7 +112,10 @@ export default function AuthPage() {
 										</div>
 									</div>
 									<div className='row'>
-										<button className='wawes-effect wawes-light btn blue'>
+										<button
+											className='wawes-effect wawes-light btn blue'
+											onClick={registerHandler}
+										>
 											Регистрация
 										</button>
 										<Link

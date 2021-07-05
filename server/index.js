@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
+const cors = require('./middlewares/cors');
+const authRoutes = require('./routes/auth.routes');
+
 const app = express();
 const PORT = process.env.PORT || 3005;
 
@@ -12,6 +15,10 @@ const dbCongif = {
 	useFindAndModify: true,
 	useCreateIndex: true,
 };
+
+app.use(express.json({ extended: true }));
+app.use(cors);
+app.use('/api/auth', authRoutes);
 
 const start = async () => {
 	try {
