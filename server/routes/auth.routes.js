@@ -1,6 +1,7 @@
 const { Router } = require('express');
-const User = require('../models/User');
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
 
 const router = new Router();
 
@@ -29,7 +30,9 @@ router.post(
 					.json({ message: 'Такой email уже занят' });
 			}
 
-			const user = new User({ email, password });
+			hashedPass = await bcrypt.hash(password, 12);
+
+			const user = new User({ email, password: hashedPass });
 			await user.save();
 
 			res.status(201).json({ message: 'Пользователь создан' });
