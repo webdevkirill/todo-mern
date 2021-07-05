@@ -6,7 +6,7 @@ export default function AuthPage() {
 		<>
 			<div className='container'>
 				<div className='auth-page'>
-					<h3>Авторизация</h3>
+					<h3>Вход</h3>
 					<form className='form form-login'>
 						<div className='row'>
 							<div className='input-field col s12'>
