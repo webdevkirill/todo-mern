@@ -89,7 +89,7 @@ export default function AuthPage() {
 									</div>
 									<div className='row'>
 										<button
-											className='wawes-effect wawes-light btn blue'
+											className='waves-effect waves-light btn blue'
 											onClick={loginHandler}
 										>
 											Войти
@@ -138,7 +138,7 @@ export default function AuthPage() {
 									</div>
 									<div className='row'>
 										<button
-											className='wawes-effect wawes-light btn blue'
+											className='waves-effect waves-light btn blue'
 											onClick={registerHandler}
 										>
 											Регистрация
