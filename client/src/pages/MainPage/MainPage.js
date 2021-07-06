@@ -48,6 +48,28 @@ export default function MainPage() {
 		}
 	}, [userId]);
 
+	const removeTodo = async (id) => {
+		try {
+			await axios
+				.delete(
+					`http://localhost:3005/api/todo/delete/${id}`,
+					{
+						id,
+					},
+					{
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				)
+				.then(() => {
+					getTodos();
+				});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	useEffect(() => {
 		getTodos();
 	}, [getTodos]);
@@ -96,7 +118,10 @@ export default function MainPage() {
 								<i className='material-icons orange-text'>
 									warning
 								</i>
-								<i className='material-icons red-text'>
+								<i
+									className='material-icons red-text'
+									onClick={() => removeTodo(todo._id)}
+								>
 									delete
 								</i>
 							</div>
