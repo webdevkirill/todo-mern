@@ -70,7 +70,7 @@ router.post(
 					.json({ message: 'Такой email не найден' });
 			}
 
-			const isSamePass = bctypt.compare(password, user.password);
+			const isSamePass = bcrypt.compare(password, user.password);
 
 			if (!isSamePass) {
 				return res.status(400).json({ message: 'Пароль неверный' });

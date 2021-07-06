@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import './authPage.sass';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function AuthPage() {
 	const [form, setForm] = useState({
 		email: '',
 		password: '',
 	});
+
+	const { login } = useContext(AuthContext);
 
 	const inputChangeHandler = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,6 +33,22 @@ export default function AuthPage() {
 		}
 	};
 
+	const loginHandler = async () => {
+		try {
+			await axios
+				.post('http://localhost:3005/api/auth/login', form, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+				.then(({ data }) => {
+					login(data.token, data.userId);
+				});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<BrowserRouter>
 			<Switch>
@@ -38,7 +57,10 @@ export default function AuthPage() {
 						<div className='auth-page'>
 							<Route path='/login'>
 								<h3>Вход</h3>
-								<form className='form form-login'>
+								<form
+									className='form form-login'
+									onSubmit={(e) => e.preventDefault()}
+								>
 									<div className='row'>
 										<div className='input-field col s12'>
 											<input
@@ -66,7 +88,10 @@ export default function AuthPage() {
 										</div>
 									</div>
 									<div className='row'>
-										<button className='wawes-effect wawes-light btn blue'>
+										<button
+											className='wawes-effect wawes-light btn blue'
+											onClick={loginHandler}
+										>
 											Войти
 										</button>
 										<Link
