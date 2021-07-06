@@ -14,20 +14,19 @@ export default function AuthPage() {
 
 	const inputChangeHandler = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
-		console.log(form);
 	};
 
 	const registerHandler = async () => {
 		try {
-			await axios
-				.post('http://localhost:3005/api/auth/registration', form, {
+			await axios.post(
+				'http://localhost:3005/api/auth/registration',
+				form,
+				{
 					headers: {
 						'Content-Type': 'application/json',
 					},
-				})
-				.then((res) => {
-					console.log(res);
-				});
+				}
+			);
 		} catch (err) {
 			console.error(err);
 		}
