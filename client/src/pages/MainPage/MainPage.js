@@ -1,12 +1,41 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import axios from 'axios';
 import './mainPage.sass';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function MainPage() {
+	const [text, setText] = useState('');
+	const { userId } = useContext(AuthContext);
+
+	const createTodo = async () => {
+		try {
+			await axios
+				.post(
+					'http://localhost:3005/api/todo/add',
+					{
+						text,
+						userId,
+					},
+					{
+						headers: { 'Content-Type': 'application/json' },
+					}
+				)
+				.then((response) => {
+					console.log(response);
+				});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<div className='container'>
 			<div className='main-page'>
 				<h4>Добавить задачу</h4>
-				<form className='form form-login'>
+				<form
+					className='form form-login'
+					onSubmit={(e) => e.preventDefault()}
+				>
 					<div className='row'>
 						<div className='input-field col s12'>
 							<input
@@ -14,12 +43,17 @@ export default function MainPage() {
 								id='task'
 								name='task'
 								className='validate'
+								value={text}
+								onChange={(e) => setText(e.target.value)}
 							/>
 							<label htmlFor='task'>Задача</label>
 						</div>
 					</div>
 					<div className='row'>
-						<button className='waves-effect waves-light btn blue'>
+						<button
+							className='waves-effect waves-light btn blue'
+							onClick={createTodo}
+						>
 							Добавить
 						</button>
 					</div>

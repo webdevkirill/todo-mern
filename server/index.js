@@ -4,6 +4,7 @@ const dotenv = require('dotenv').config();
 
 const cors = require('./middlewares/cors');
 const authRoutes = require('./routes/auth.routes');
+const todoRoutes = require('./routes/todo.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3005;
@@ -19,6 +20,7 @@ const dbCongif = {
 app.use(express.json({ extended: true }));
 app.use(cors);
 app.use('/api/auth', authRoutes);
+app.use('/api/todo', todoRoutes);
 
 const start = async () => {
 	try {
