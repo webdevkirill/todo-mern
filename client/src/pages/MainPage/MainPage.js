@@ -70,6 +70,28 @@ export default function MainPage() {
 		}
 	};
 
+	const setTodoQuality = async (id, quality) => {
+		try {
+			await axios
+				.put(
+					`http://localhost:3005/api/todo/${quality}/${id}`,
+					{
+						id,
+					},
+					{
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				)
+				.then(() => {
+					getTodos();
+				});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	useEffect(() => {
 		getTodos();
 	}, [getTodos]);
@@ -108,14 +130,29 @@ export default function MainPage() {
 				<h3>Активные задачи</h3>
 				<div className='todos'>
 					{todos.map((todo, idx) => (
-						<div className='row flex todos-item' key={todo._id}>
+						<div
+							className={`row flex todos-item ${
+								todo.important && 'important'
+							} ${todo.complited && 'complited'}`}
+							key={todo._id}
+						>
 							<div className='col todos-num'>{idx + 1}</div>
 							<div className='col todos-text'>{todo.text}</div>
 							<div className='col todos-buttons'>
-								<i className='material-icons blue-text'>
+								<i
+									className='material-icons blue-text'
+									onClick={() =>
+										setTodoQuality(todo._id, 'complite')
+									}
+								>
 									check
 								</i>
-								<i className='material-icons orange-text'>
+								<i
+									className='material-icons orange-text'
+									onClick={() =>
+										setTodoQuality(todo._id, 'important')
+									}
+								>
 									warning
 								</i>
 								<i
